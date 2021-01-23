@@ -19,7 +19,7 @@ table_rdv = '''
         CIN INT NOT NULL,
         RDV_DATE DATE NOT NULL,
         HEURE TIME NOT NULL,
-        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN)
+        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN) ON DELETE CASCADE
     )
 '''
 
@@ -27,7 +27,7 @@ table_seances = '''
     CREATE TABLE SEANCES(
         CIN INT NOT NULL,
         SEANCES INT NOT NULL,
-        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN)
+        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN) ON DELETE CASCADE
     )
 '''
 
@@ -37,7 +37,7 @@ table_caisse = '''
         RDV_DATE DATE NOT NULL,
         HEURE TIME NOT NULL,
         COUT INT NOT NULL,
-        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN)
+        FOREIGN KEY(CIN) REFERENCES PATIENTS(CIN) ON DELETE CASCADE
     )
 '''
 
@@ -45,6 +45,7 @@ cnx = sqlite3.connect("data/cabinet_dentaire.db")
 
 #def create_tables():
 try:
+    cnx.execute("pragma foreign_keys = on")
     cnx.execute(table_patients)
     cnx.execute(table_rdv)
     cnx.execute(table_seances)
