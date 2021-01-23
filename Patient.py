@@ -80,6 +80,7 @@ class Patient:
                         cnx.commit()
                         return True
                     except Exception as e:
+                        print(e)
                         return False
         return False
 
@@ -125,8 +126,8 @@ class Patient:
     def __toString__(self):
         return("[CIN: "+str(self.cin)+",NOM: "+self.nom+",PRENOM: "+self.prenom+",DATE_DE_NAISSANCE: "+self.date_naiss+",NUMERO_DE_TELEPHONE: "+self.num_tel+"]")
 
-import random
+#import random
 
-cin = random.randint(10000000,99999999)
-p = Patient(cin, "TESTT", "Testt", "10-12-1996", "+216145254") 
-Patient.__add__(p)
+#cin = random.randint(10000000,99999999)
+#p = Patient(cin, "TESTT", "Testt", "10-12-1996", "+216145254") 
+#Patient.__add__(p)
