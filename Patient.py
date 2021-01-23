@@ -1,6 +1,7 @@
 import sqlite3
 from dbcnx import cnx
-# class Patient
+#class Patient
+
 class Patient:
 
     patients = []
@@ -14,8 +15,10 @@ class Patient:
         self.num_tel = num_tel
     
     # ajouter un patient
-    def __add__(self):
-        
+    #pour eviter 'Patient object is not callable'
+    #change all self (new Patient) by p
+    #change all self (Patient object) by Patient
+    def __add__(p):
         '''
         if self.patients.__len__():
             for i in self.patients:
@@ -24,16 +27,15 @@ class Patient:
         self.patients.append(self)
         return True
         '''
-
-        date_naissance = sqlite3.Date(int(self.date_naiss.split("-")[2]),int(self.date_naiss.split("-")[1]), int(self.date_naiss.split("-")[0]))
+        date_naissance = sqlite3.Date(int(p.date_naiss.split("-")[2]),int(p.date_naiss.split("-")[1]), int(p.date_naiss.split("-")[0]))
         sql = "INSERT INTO PATIENTS(CIN, NOM, PRENOM, DATE_NAISS, NUM_TEL) VALUES (?,?,?,?,?);"
         try:
-            cnx.execute(sql, (str(self.cin), self.nom, self.prenom, date_naissance, self.num_tel))
+            cnx.execute(sql, (str(p.cin), p.nom, p.prenom, date_naissance, p.num_tel))
             cnx.commit()
-            self.__getall__()
+            Patient.__getall__(Patient)
             return True
         except Exception as e:
-            #print(e)
+            print(e)
             return False
     
     # modifier les infomation d'un passient
@@ -122,3 +124,9 @@ class Patient:
     # return "object" informations (string)
     def __toString__(self):
         return("[CIN: "+str(self.cin)+",NOM: "+self.nom+",PRENOM: "+self.prenom+",DATE_DE_NAISSANCE: "+self.date_naiss+",NUMERO_DE_TELEPHONE: "+self.num_tel+"]")
+
+import random
+
+cin = random.randint(10000000,99999999)
+p = Patient(cin, "TESTT", "Testt", "10-12-1996", "+216145254") 
+Patient.__add__(p)
