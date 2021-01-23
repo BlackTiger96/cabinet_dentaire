@@ -231,10 +231,39 @@ class Rendez_vous:
 
     #comment
     def __get__(self, pcin):
+        self.__getallrdv__(self)
+        self.__getallseances__(self)
         for i in reversed(self.rdvs):
             if i.cin == pcin:
                 return i
         return False
+    
+    #comment
+    #get all rdv by specified date
+    def __getallbydate__(self, pcin, date):
+        self.__getallrdv__(self)
+        self.__getallseances__(self)
+        rdvs = []
+        for i in self.rdvs:
+            if i.cin == pcin and i.date == date:
+                rdvs.append(i)
+        if rdvs:
+            return rdvs
+        else:
+            return False
+
+    #get all rdv by cin
+    def __getallbycin__(self, pcin):
+        self.__getallrdv__(self)
+        self.__getallseances__(self)
+        rdvs = []
+        for i in self.rdvs:
+            if i.cin == pcin:
+                rdvs.append(i)
+        if rdvs:
+            return rdvs
+        else:
+            return False
 
     #comment
     def __getallrdv__(self):
