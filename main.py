@@ -1,4 +1,5 @@
 from sys import exit
+import os
 import time
 import datetime
 from colorama import init, Fore, Style
@@ -6,8 +7,8 @@ from Patient import Patient
 from Rendez_vous import Rendez_vous
 
 
-
 main_msg = '''
+====>  Selectionner un choix: \n
     1- Ajouter un Patient
     2- Modifier les information d'un patient
     3- Supprimer un Patient
@@ -20,7 +21,8 @@ main_msg = '''
     10- Vider la liste des rendez-vous
     11- Revenu Total
     12- Reafficher la liste des choix
-    13- Quitter
+    13- Effacer Tout
+    14- Quitter
 '''
 
 #time tuple
@@ -41,6 +43,16 @@ now = str(time.localtime()[3])+":"+str(time.localtime()[4])+":"+str(time.localti
 #0--> Now
 #1--> 1 attendez and return time
 #2--> 2 "retard" and return "retard" duration
+
+def get_choice(msg):
+    choice = False
+    while not choice:
+        choice = input(msg)
+        try:
+            choice = int(choice)
+        except Exception as e:
+            choice = False
+    return choice
 
 def compare_time(t_now, t_rdv):
     rdv_timestamp = datetime.datetime.strptime(t_rdv[0]+" "+t_rdv[1], "%Y-%m-%d %H:%M:%S").timestamp()
@@ -74,10 +86,9 @@ if __name__ == "__main__":
     print("| MAINTENANT: ", now,"   |")
     print(" --------------------------\n")
 
-    print("====>Selectionner un choix: ")
     print(main_msg)
 
-    choice = int(input("CHOIX: "))
+    choice = get_choice("CHOIX: ")
     while choice:
         # patients operations
         if choice == 1:
@@ -163,9 +174,11 @@ if __name__ == "__main__":
             print("1 ---->AUJOURD'HUI")
             print("2 ---->TOUT")
             print("3 ---->DERNIER")
-            _choice = int(input("CHOIX ---->: "))
-            cin = int(input("CIN: "))
+            _choice = get_choice("CHOIX ---->: ")
+            while _choice not in [1,2,3]:
+                _choice = get_choice("CHOIX ---->: ")
             if _choice == 1:
+                cin = int(input("CIN: "))
                 today_rdv = Rendez_vous.__getallbydate__(Rendez_vous, cin, today)
                 if today_rdv:
                     print("******************************")
@@ -183,6 +196,7 @@ if __name__ == "__main__":
                 else:
                     pred("PATIENT N'EXISTE PAS OU VOUS N'AVEZ PAS UN RENDEZ-VOUS !\n")
             elif _choice == 2:
+                cin = int(input("CIN: "))
                 all_rdvs = Rendez_vous.__getallbycin__(Rendez_vous, cin)
                 if all_rdvs:
                     print("******************************")
@@ -200,6 +214,7 @@ if __name__ == "__main__":
                 else:
                     print("PATIENT N'EXISTE PAS OU VOUS N'AVEZ PAS UN RENDEZ-VOUS !\n")
             elif _choice == 3:
+                cin = int(input("CIN: "))
                 last_rdv = Rendez_vous.__get__(Rendez_vous, cin)
                 if last_rdv:
                     if compare_time([last_rdv.date, last_rdv.heure], [str(today), str(now)]):
@@ -277,11 +292,13 @@ if __name__ == "__main__":
         elif choice == 12:
             print(main_msg)
         elif choice == 13:
+            os.system("cls")
+        elif choice == 14:
             print("A BIENTOT :)")
             exit()
 
 
-        choice = int(input("CHOIX: "))
+        choice = get_choice("CHOIX: ")
 
 
 
